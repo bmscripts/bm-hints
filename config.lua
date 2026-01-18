@@ -2,7 +2,7 @@ Config = {}
 
 Config.Locale = "en" -- only language currently supported is english
 
-Config.notifyPosition = "center-right" -- top | top-right | top-left | bottom | bottom-right | bottom-left | center-right | center-left
+Config.notifyPosition = "top-right" -- top | top-right | top-left | bottom | bottom-right | bottom-left | center-right | center-left
 
 Config.Peds = {
     {
@@ -119,3 +119,4 @@ Config.Peds = {
 
     -- Add unlimited peds here
 }
+
