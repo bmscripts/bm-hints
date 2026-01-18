@@ -15,24 +15,24 @@ Designed with modularity, UX, and server‑owner flexibility in mind.
 
 ## ✨ Features
 
-- 🧍 Unlimited NPC information brokers  
-- 💬 Custom hint categories per NPC  
-- 💰 Multiple payment types  
+- Unlimited NPC information brokers  
+- Custom hint categories per NPC  
+- Multiple payment types  
   - Cash  
   - Bank  
   - Item  
-- ⏳ Per‑hint cooldown system  
-- 📦 Six delivery methods  
+- Per‑hint cooldown system  
+- Six delivery methods  
   - Email  
   - Text  
   - Item  
   - Waypoint  
   - Blip  
   - Notify (with custom duration)  
-- 🗺️ Optional ped blips + markers  
-- 🔧 Fully configurable  
-- 🧩 Modular client/server structure  
-- ⚡ Optimized (0.00ms idle)
+- Optional ped blips + markers  
+- Fully configurable  
+- Modular client/server structure  
+- Optimized (0.02ms idle)
 
 ---
 
