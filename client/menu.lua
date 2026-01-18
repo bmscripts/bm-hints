@@ -1,8 +1,10 @@
 RegisterNetEvent('bm-hints:openMenu', function(pedIndex)
     local pedData = Config.Peds[pedIndex]
+    local L = Lang[Config.Locale] -- shorthand
+
     local menu = {
         {
-            title = "What would you like information about?",
+            title = L.general.info_menu_header,
             icon = pedData.icon,
             disabled = true
         }
@@ -28,7 +30,7 @@ RegisterNetEvent('bm-hints:openMenu', function(pedIndex)
 
     lib.registerContext({
         id = 'bm-hints-menu-' .. pedIndex,
-        title = "Information",
+        title = L.general.info_menu_title,
         options = menu
     })
 

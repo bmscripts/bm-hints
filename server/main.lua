@@ -5,11 +5,13 @@ lib.callback.register('bm-hints:pay', function(source, payment, pedIndex, hintIn
     local player = core:GetPlayer(source)
     if not player then return false end
 
+    local L = Lang[Config.Locale] -- shorthand
+
     -- Validate pedIndex + hintIndex
     if not pedIndex or not hintIndex then
         print("^1[BM-HINTS] ERROR: pedIndex or hintIndex missing from client callback^0")
         TriggerClientEvent('ox_lib:notify', source, {
-            description = "Internal error: invalid hint reference.",
+            description = L.errors.invalid_hint,
             type = "error"
         })
         return false
@@ -19,6 +21,10 @@ lib.callback.register('bm-hints:pay', function(source, payment, pedIndex, hintIn
     local pedData = Config.Peds[pedIndex]
     if not pedData then
         print("^1[BM-HINTS] ERROR: Invalid pedIndex (" .. tostring(pedIndex) .. ")^0")
+        TriggerClientEvent('ox_lib:notify', source, {
+            description = L.errors.invalid_ped,
+            type = "error"
+        })
         return false
     end
 
@@ -26,6 +32,10 @@ lib.callback.register('bm-hints:pay', function(source, payment, pedIndex, hintIn
     local hint = pedData.hints[hintIndex]
     if not hint then
         print("^1[BM-HINTS] ERROR: Invalid hintIndex (" .. tostring(hintIndex) .. ") for ped " .. pedIndex .. "^0")
+        TriggerClientEvent('ox_lib:notify', source, {
+            description = L.errors.invalid_hint,
+            type = "error"
+        })
         return false
     end
 
@@ -42,7 +52,7 @@ lib.callback.register('bm-hints:pay', function(source, payment, pedIndex, hintIn
     if now < expires then
         local remaining = expires - now
         TriggerClientEvent('ox_lib:notify', source, {
-            description = ("You must wait %s seconds before asking again."):format(remaining),
+            description = (L.cooldown.active):format(remaining),
             type = "error"
         })
         return false
@@ -51,6 +61,10 @@ lib.callback.register('bm-hints:pay', function(source, payment, pedIndex, hintIn
     -- Validate payment table
     if not payment or not payment.type then
         print("^1[BM-HINTS] ERROR: Invalid payment table received from client^0")
+        TriggerClientEvent('ox_lib:notify', source, {
+            description = L.payment.invalid_payment,
+            type = "error"
+        })
         return false
     end
 
@@ -61,15 +75,16 @@ lib.callback.register('bm-hints:pay', function(source, payment, pedIndex, hintIn
     if pType == "bank" then
         if player.Functions.RemoveMoney('bank', amount) then
             cooldowns[source][pedIndex][hintIndex] = now + (cd / 1000)
+
             TriggerClientEvent('ox_lib:notify', source, {
-                description = ("Paid $%s from bank"):format(amount),
+                description = (L.payment.paid_bank):format(amount),
                 type = "success"
             })
             return true
         end
 
         TriggerClientEvent('ox_lib:notify', source, {
-            description = "Not enough bank balance",
+            description = L.payment.not_enough_bank,
             type = "error"
         })
         return false
@@ -79,15 +94,16 @@ lib.callback.register('bm-hints:pay', function(source, payment, pedIndex, hintIn
     if pType == "cash" then
         if player.Functions.RemoveMoney('cash', amount) then
             cooldowns[source][pedIndex][hintIndex] = now + (cd / 1000)
+
             TriggerClientEvent('ox_lib:notify', source, {
-                description = ("Paid $%s in cash"):format(amount),
+                description = (L.payment.paid_cash):format(amount),
                 type = "success"
             })
             return true
         end
 
         TriggerClientEvent('ox_lib:notify', source, {
-            description = "Not enough cash",
+            description = L.payment.not_enough_cash,
             type = "error"
         })
         return false
@@ -100,6 +116,10 @@ lib.callback.register('bm-hints:pay', function(source, payment, pedIndex, hintIn
 
         if not item then
             print("^1[BM-HINTS] ERROR: Item payment missing item name^0")
+            TriggerClientEvent('ox_lib:notify', source, {
+                description = L.payment.invalid_payment,
+                type = "error"
+            })
             return false
         end
 
@@ -110,20 +130,25 @@ lib.callback.register('bm-hints:pay', function(source, payment, pedIndex, hintIn
             cooldowns[source][pedIndex][hintIndex] = now + (cd / 1000)
 
             TriggerClientEvent('ox_lib:notify', source, {
-                description = ("Paid %sx %s"):format(itemAmount, item),
+                description = (L.payment.paid_item):format(itemAmount, item),
                 type = "success"
             })
             return true
         end
 
         TriggerClientEvent('ox_lib:notify', source, {
-            description = ("You need %sx %s"):format(itemAmount, item),
+            description = (L.payment.not_enough_items):format(itemAmount, item),
             type = "error"
         })
         return false
     end
 
+    -- Unknown payment type
     print("^1[BM-HINTS] ERROR: Unknown payment type '" .. tostring(pType) .. "'^0")
+    TriggerClientEvent('ox_lib:notify', source, {
+        description = L.errors.unknown_payment_type,
+        type = "error"
+    })
     return false
 end)
 
@@ -133,10 +158,12 @@ RegisterNetEvent('bm-hints:giveItem', function(item)
     local player = core:GetPlayer(src)
     if not player then return end
 
+    local L = Lang[Config.Locale]
+
     player.Functions.AddItem(item, 1)
 
     TriggerClientEvent('ox_lib:notify', src, {
-        description = ("Received item: %s"):format(item),
+        description = (L.delivery.item_received):format(item),
         type = "success"
     })
 end)

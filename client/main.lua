@@ -1,13 +1,15 @@
 local core = exports.qbx_core
 
--- ped_streamer.lua handles all ped spawning, blips, markers, and payments
+-- peds.lua handles all ped spawning, blips, markers, and payments
 
 RegisterNetEvent('bm-hints:sendHint', function(pedIndex, hintIndex)
     local hint = Config.Peds[pedIndex].hints[hintIndex]
     local delivery = hint.delivery
+    local L = Lang[Config.Locale] -- shorthand
 
+    -- Contact confirmation
     lib.notify({
-        description = "I'll be in touch soon.",
+        description = L.general.contact_soon,
         type = "success"
     })
 
@@ -39,7 +41,7 @@ RegisterNetEvent('bm-hints:sendHint', function(pedIndex, hintIndex)
         if delivery.method == "waypoint" and delivery.waypoint then
             SetNewWaypoint(delivery.waypoint.x, delivery.waypoint.y)
             lib.notify({
-                description = "A location has been marked on your GPS.",
+                description = L.delivery.waypoint_set,
                 type = "inform"
             })
         end
@@ -58,7 +60,7 @@ RegisterNetEvent('bm-hints:sendHint', function(pedIndex, hintIndex)
             EndTextCommandSetBlipName(blip)
 
             lib.notify({
-                description = "A location has been marked on your map.",
+                description = L.delivery.blip_set,
                 type = "inform"
             })
         end

@@ -1,5 +1,7 @@
 Config = {}
 
+Config.Locale = "en" -- only language currently supported is english
+
 Config.Peds = {
     {
         model = `ig_lestercrest`, -- https://docs.fivem.net/docs/game-references/ped-models/

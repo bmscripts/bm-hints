@@ -1,21 +1,23 @@
 fx_version 'cerulean'
 game 'gta5'
 
+name 'BM Hints'
 author 'BM Scripts'
-description 'Give out hints to secret locations using emails'
+description 'QB/QBox Information Broker System'
 version '1.0.0'
 
 lua54 'yes'
 
 shared_scripts {
-    '@ox_lib/init.lua',   -- MUST load first
-    'config.lua',         -- Config must load before client/server
+    '@ox_lib/init.lua',
+    'config.lua',
+    'locales/*.lua'
 }
 
 client_scripts {
-    'client/ped_streamer.lua',  -- Streaming system (must load before main)
+    'client/peds.lua',
     'client/main.lua',
-    'client/menu.lua',
+    'client/menu.lua'
 }
 
 server_scripts {

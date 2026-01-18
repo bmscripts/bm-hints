@@ -4,6 +4,8 @@ local pedBlips = {}
 
 -- Spawn a ped when player enters streaming range
 local function spawnPed(index, data)
+    local L = Lang[Config.Locale] -- shorthand
+
     lib.requestModel(data.model)
 
     local ped = CreatePed(
@@ -33,7 +35,7 @@ local function spawnPed(index, data)
         SetBlipAsShortRange(blip, true)
 
         BeginTextCommandSetBlipName("STRING")
-        AddTextComponentString(data.blip.text or "Information")
+        AddTextComponentString(data.blip.text or L.general.info_menu_title)
         EndTextCommandSetBlipName(blip)
 
         pedBlips[index] = blip
@@ -43,7 +45,7 @@ local function spawnPed(index, data)
     pedTargets[index] = exports.ox_target:addLocalEntity(ped, {
         {
             icon = data.icon,
-            label = ("%s ($%s)"):format(data.label, data.payment.amount),
+            label = ("%s ($%s)"):format(data.label or L.general.info_menu_title, data.payment.amount),
             onSelect = function()
                 TriggerEvent('bm-hints:openMenu', index)
             end
