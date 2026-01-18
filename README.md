@@ -24,7 +24,6 @@ Designed with modularity, UX, and server‑owner flexibility in mind.
 - Per‑hint cooldown system  
 - Six delivery methods  
   - Email  
-  - Text  
   - Item  
   - Waypoint  
   - Blip  
@@ -41,7 +40,7 @@ Designed with modularity, UX, and server‑owner flexibility in mind.
 - **QBCore (qbx_core)**
 - **ox_lib**
 - **ox_target**
-- **qb-phone** (for email/text delivery)
+- **qb-phone** (or any phone using qb-phone email export)
 
 ---
 
