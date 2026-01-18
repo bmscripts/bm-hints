@@ -10,7 +10,8 @@ RegisterNetEvent('bm-hints:sendHint', function(pedIndex, hintIndex)
     -- Contact confirmation
     lib.notify({
         description = L.general.contact_soon,
-        type = "success"
+        type = "success",
+        position = Config.notifyPosition
     })
 
     SetTimeout(hint.wait, function()
@@ -42,7 +43,8 @@ RegisterNetEvent('bm-hints:sendHint', function(pedIndex, hintIndex)
             SetNewWaypoint(delivery.waypoint.x, delivery.waypoint.y)
             lib.notify({
                 description = L.delivery.waypoint_set,
-                type = "inform"
+                type = "inform",
+                position = Config.notifyPosition
             })
         end
 
@@ -61,7 +63,8 @@ RegisterNetEvent('bm-hints:sendHint', function(pedIndex, hintIndex)
 
             lib.notify({
                 description = L.delivery.blip_set,
-                type = "inform"
+                type = "inform",
+                position = Config.notifyPosition
             })
         end
 
@@ -74,7 +77,8 @@ RegisterNetEvent('bm-hints:sendHint', function(pedIndex, hintIndex)
             lib.notify({
                 description = msg,
                 type = nType,
-                duration = duration
+                duration = duration,
+                position = Config.notifyPosition
             })
         end
 

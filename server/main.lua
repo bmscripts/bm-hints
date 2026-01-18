@@ -12,7 +12,8 @@ lib.callback.register('bm-hints:pay', function(source, payment, pedIndex, hintIn
         print("^1[BM-HINTS] ERROR: pedIndex or hintIndex missing from client callback^0")
         TriggerClientEvent('ox_lib:notify', source, {
             description = L.errors.invalid_hint,
-            type = "error"
+            type = "error",
+            position = Config.notifyPosition
         })
         return false
     end
@@ -23,7 +24,8 @@ lib.callback.register('bm-hints:pay', function(source, payment, pedIndex, hintIn
         print("^1[BM-HINTS] ERROR: Invalid pedIndex (" .. tostring(pedIndex) .. ")^0")
         TriggerClientEvent('ox_lib:notify', source, {
             description = L.errors.invalid_ped,
-            type = "error"
+            type = "error",
+            position = Config.notifyPosition
         })
         return false
     end
@@ -34,7 +36,8 @@ lib.callback.register('bm-hints:pay', function(source, payment, pedIndex, hintIn
         print("^1[BM-HINTS] ERROR: Invalid hintIndex (" .. tostring(hintIndex) .. ") for ped " .. pedIndex .. "^0")
         TriggerClientEvent('ox_lib:notify', source, {
             description = L.errors.invalid_hint,
-            type = "error"
+            type = "error",
+            position = Config.notifyPosition
         })
         return false
     end
@@ -53,7 +56,8 @@ lib.callback.register('bm-hints:pay', function(source, payment, pedIndex, hintIn
         local remaining = expires - now
         TriggerClientEvent('ox_lib:notify', source, {
             description = (L.cooldown.active):format(remaining),
-            type = "error"
+            type = "error",
+            position = Config.notifyPosition
         })
         return false
     end
@@ -63,7 +67,8 @@ lib.callback.register('bm-hints:pay', function(source, payment, pedIndex, hintIn
         print("^1[BM-HINTS] ERROR: Invalid payment table received from client^0")
         TriggerClientEvent('ox_lib:notify', source, {
             description = L.payment.invalid_payment,
-            type = "error"
+            type = "error",
+            position = Config.notifyPosition
         })
         return false
     end
@@ -78,14 +83,16 @@ lib.callback.register('bm-hints:pay', function(source, payment, pedIndex, hintIn
 
             TriggerClientEvent('ox_lib:notify', source, {
                 description = (L.payment.paid_bank):format(amount),
-                type = "success"
+                type = "success",
+                position = Config.notifyPosition
             })
             return true
         end
 
         TriggerClientEvent('ox_lib:notify', source, {
             description = L.payment.not_enough_bank,
-            type = "error"
+            type = "error",
+            position = Config.notifyPosition
         })
         return false
     end
@@ -97,14 +104,16 @@ lib.callback.register('bm-hints:pay', function(source, payment, pedIndex, hintIn
 
             TriggerClientEvent('ox_lib:notify', source, {
                 description = (L.payment.paid_cash):format(amount),
-                type = "success"
+                type = "success",
+                position = Config.notifyPosition
             })
             return true
         end
 
         TriggerClientEvent('ox_lib:notify', source, {
             description = L.payment.not_enough_cash,
-            type = "error"
+            type = "error",
+            position = Config.notifyPosition
         })
         return false
     end
@@ -118,7 +127,8 @@ lib.callback.register('bm-hints:pay', function(source, payment, pedIndex, hintIn
             print("^1[BM-HINTS] ERROR: Item payment missing item name^0")
             TriggerClientEvent('ox_lib:notify', source, {
                 description = L.payment.invalid_payment,
-                type = "error"
+                type = "error",
+                position = Config.notifyPosition
             })
             return false
         end
@@ -131,14 +141,16 @@ lib.callback.register('bm-hints:pay', function(source, payment, pedIndex, hintIn
 
             TriggerClientEvent('ox_lib:notify', source, {
                 description = (L.payment.paid_item):format(itemAmount, item),
-                type = "success"
+                type = "success",
+                position = Config.notifyPosition
             })
             return true
         end
 
         TriggerClientEvent('ox_lib:notify', source, {
             description = (L.payment.not_enough_items):format(itemAmount, item),
-            type = "error"
+            type = "error",
+            position = Config.notifyPosition
         })
         return false
     end
@@ -147,7 +159,8 @@ lib.callback.register('bm-hints:pay', function(source, payment, pedIndex, hintIn
     print("^1[BM-HINTS] ERROR: Unknown payment type '" .. tostring(pType) .. "'^0")
     TriggerClientEvent('ox_lib:notify', source, {
         description = L.errors.unknown_payment_type,
-        type = "error"
+        type = "error",
+        position = Config.notifyPosition
     })
     return false
 end)
@@ -164,6 +177,7 @@ RegisterNetEvent('bm-hints:giveItem', function(item)
 
     TriggerClientEvent('ox_lib:notify', src, {
         description = (L.delivery.item_received):format(item),
-        type = "success"
+        type = "success",
+        position = Config.notifyPosition
     })
 end)
