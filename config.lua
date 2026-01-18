@@ -1,112 +1,117 @@
-Config = Config or {}
+Config = {}
 
-Config.Ped = 'ig_lestercrest' -- Change me
-Config.PedScenario = 'WORLD_HUMAN_SEAT_WALL_TABLET' -- Change me
-Config.PedLocation = vector4(1274.73, -1707.93, 54.2, 110.0) -- Change me
+Config.Peds = {
+    {
+        model = `ig_lestercrest`, -- https://docs.fivem.net/docs/game-references/ped-models/
+        scenario = 'WORLD_HUMAN_SEAT_WALL_TABLET', -- https://github.com/DioneB/GTAV-Scenarios
+        coords = vec4(1274.73, -1707.93, 54.2, 110.0),
+        icon = 'fa-solid fa-comments-dollar', -- https://fontawesome.com/search
+        label = 'Buy Information',
 
--- Change to your liking
-Config.WaitTime = 60000 -- Time before the email is sent
-Config.InfoCost = 10000 -- Cost to talk to the ped
+        payment = {
+            type = "item",      -- bank, cash, item
+            amount = 10000,     -- used for bank/cash
+            item = "goldbar",   -- if not used simply put nil
+            itemAmount = 1      -- if not used simply put nil
+        },
 
+        blip = { -- https://docs.fivem.net/docs/game-references/blips/
+            enabled = true,
+            sprite = 66, -- blip type
+            color = 0, -- blip colour
+            scale = 1.0, -- blip size
+            text = "Information Broker" -- blip name
+        },
 
--- Ped Menu
-Config.HintIcon = 'fa-solid fa-comments-dollar'
-Config.HintLabel = 'Buy information' .. " ($".. Config.InfoCost..")"
-Config.MenuHeader = 'What would you like information about?'
-Config.MenuIcon = 'fa-solid fa-comments-dollar'
+        marker = { -- https://docs.fivem.net/docs/game-references/markers/
+            enabled = true,
+            type = 32, -- marker type
+            size = vec3(0.5, 0.5, 0.5), -- marker size
+            color = { r = 255, g = 255, b = 255, a = 150 }, -- marker colour
+            bob = false, -- move up and down
+            rotate = true -- follow the camera
+        },
+        
+        hints = {
+            {
+                header = "ATM Robbery",
+                subtext = "High risk, high reward!",
+                icon = "fa-solid fa-credit-card", -- https://fontawesome.com/search
+                emailSender = "Lester Crest",
+                emailSubject = "Regarding an ATM Robbery",
+                emailMessage = "Before you go hit any ATMs you will need a few things depending on which method you choose to do. You can either find a credit card and hack into the ATM. Find a gas tank and lighter and blow open the ATM. Or find a laser drill, nylon rope, and toolkit and use your car pull out the ATM.",
+                wait = 5000, -- how long till the delivery method is made
+                cooldown = 10000, -- how long the player has to wait to find more information
+                delivery = {
+                    method = "email" -- email, text, item, waypoint, blip, notify
+                }
+            },
+            {
+                header = "Store Robbery",
+                subtext = "High risk, high reward!",
+                icon = "fa-solid fa-basket-shopping", -- https://fontawesome.com/search
+                emailSender = "Lester Crest",
+                emailSubject = "Regarding a Store Robbery",
+                emailMessage = "Before you go hit any convenience stores you will need a few things. You will need to search for a circuit tester, an advanced lockpick, a hard drive, and an encrypted device.",
+                wait = 5000, -- how long till the delivery method is made
+                cooldown = 10000, -- how long the player has to wait to find more information
+                delivery = {
+                    method = "item", -- email, text, item, waypoint, blip, notify
+                    item = "goldbar" -- item given to the player
+                }
+            },
+            {
+                header = "House Robbery",
+                subtext = "High risk, high reward!",
+                icon = "fa-solid fa-house", -- https://fontawesome.com/search
+                emailSender = "Lester Crest",
+                emailSubject = "Regarding a House Robbery",
+                emailMessage = "Before you go hit any houses you will need an advanced lockpick and will need to search for a guy who will guide you through the rest.",
+                wait = 5000, -- how long till the delivery method is made
+                cooldown = 10000, -- how long the player has to wait to find more information
+                delivery = {
+                    method = "waypoint", -- email, text, item, waypoint, blip, notify
+                    waypoint = vec3(452.1, -973.2, 30.7) -- GPS marker
+                }
+            },
+            {
+                header = "Vangelico Heist",
+                subtext = "High risk, high reward!",
+                icon = "fa-solid fa-gem", -- https://fontawesome.com/search
+                emailSender = "Lester Crest",
+                emailSubject = "Regarding a Vangelico Heist",
+                emailMessage = "Before you go hit Vangelico you will need a few things. Depending on if you want to go in loud or quiet you will need to search for a smoke grenade, an encrypted phone, a hammer, a circuit tester, an encrypted device, a glass cutter, a fingerprint bag, and fingerprint tape.",
+                wait = 5000, -- how long till the delivery method is made
+                cooldown = 10000, -- how long the player has to wait to find more information
+                delivery = {
+                    method = "blip", -- email, text, item, waypoint, blip, notify
+                    blip = {
+                        coords = vec3(1234.5, -1300.2, 35.0),
+                        sprite = 161,
+                        color = 1,
+                        scale = 1.0,
+                        text = "Hidden Stash"
+                    }
+                }
+            },
+            {
+                header = "Fleeca Bank Heist",
+                subtext = "High risk, high reward!",
+                icon = "fa-solid fa-sack-dollar", -- https://fontawesome.com/search
+                emailSender = "Lester Crest",
+                emailSubject = "Regarding a Fleeca Bank Heist",
+                emailMessage = "Before you go hit any Fleeca banks you will need a few things. You will need to search for an encrypted device, a pair of pliers, a bag, a fleeca keycard, and an encrypted laptop.",
+                wait = 5000, -- how long till the delivery method is made
+                cooldown = 10000, -- how long the player has to wait to find more information
+                delivery = {
+                    method = "notify", -- email, text, item, waypoint, blip, notify
+                    notifyDuration = 10000, -- how long the notification stays visible (ms)
+                    notifyType = "inform", -- optional: inform, success, error
+                    notifyMessage = nil -- optional: override emailMessage
+                }
+            },
+        }
+    },
 
--- HINT LOCATION 1 --------------------------------------------------------------
-Config.HintOneHeader = 'ATM Robbery'
-Config.HintOneSubText = ''
-Config.HintOneIcon = 'fa-solid fa-credit-card'
-Config.HintOneSender = 'Lester Crest'
-Config.HintOneSubject = 'Regarding an ATM Robbery'
-Config.HintOneMessage = 'Before you go hit any ATMs you will need a few things depending on which method you choose to do. You can either find a credit card and hack into the ATM. Find a gas tank and lighter and blow open the ATM. Or find a laser drill, nylon rope, and toolkit and use your car pull out the ATM.'
-
--- HINT LOCATION 2 --------------------------------------------------------------
-Config.HintTwoHeader = 'Store Robbery'
-Config.HintTwoSubText = ''
-Config.HintTwoIcon = 'fa-solid fa-basket-shopping'
-Config.HintTwoSender = 'Lester Crest'
-Config.HintTwoSubject = 'Regarding a Store Robbery'
-Config.HintTwoMessage = 'Before you go hit any convenience stores you will need a few things. You will need to search for a circuit tester, an advanced lockpick, a hard drive, and an encrypted device.'
-
--- HINT LOCATION 3 --------------------------------------------------------------
-Config.HintThreeHeader = 'House Robbery'
-Config.HintThreeSubText = ''
-Config.HintThreeIcon = 'fa-solid fa-house'
-Config.HintThreeSender = 'Lester Crest'
-Config.HintThreeSubject = 'Regarding a House Robbery'
-Config.HintThreeMessage = 'Before you go hit any houses you will need an advanced lockpick and will need to search for a guy who will guide you through the rest.'
-
--- HINT LOCATION 4 --------------------------------------------------------------
-Config.HintFourHeader = 'Ammunation Robbery'
-Config.HintFourSubText = ''
-Config.HintFourIcon = 'fa-solid fa-gun'
-Config.HintFourSender = 'Lester Crest'
-Config.HintFourSubject = 'Regarding an Ammunation Robbery'
-Config.HintFourMessage = 'Before you go hit any Ammunation stores you will need a few things. You will need to search for a circuit tester, an unencrypted trojan USB, an advanced lockpick, a bag, and an encrypted phone.'
-
--- HINT LOCATION 5 --------------------------------------------------------------
-Config.HintFiveHeader = 'Trap House Robbery'
-Config.HintFiveSubText = ''
-Config.HintFiveIcon = 'fa-solid fa-house-lock'
-Config.HintFiveSender = 'Lester Crest'
-Config.HintFiveSubject = 'Regarding a Trap House Robbery'
-Config.HintFiveMessage = 'Before you go hit any Trap Houses you will need a few things. Depending on if you want to go in loud or quiet you will need to search for an encrypted device, a decrypted device, plastic explosive, and a stethoscope.'
-
--- HINT LOCATION 6 --------------------------------------------------------------
-Config.HintSixHeader = 'Fleeca Bank Heist'
-Config.HintSixSubText = ''
-Config.HintSixIcon = 'fa-solid fa-sack-dollar'
-Config.HintSixSender = 'Lester Crest'
-Config.HintSixSubject = 'Regarding a Fleeca Bank Heist'
-Config.HintSixMessage = 'Before you go hit any Fleeca banks you will need a few things. You will need to search for an encrypted device, a pair of pliers, a bag, a fleeca keycard, and an encrypted laptop.'
-
--- HINT LOCATION 7 --------------------------------------------------------------
-Config.HintSevenHeader = 'Vangelico Heist'
-Config.HintSevenSubText = ''
-Config.HintSevenIcon = 'fa-solid fa-gem'
-Config.HintSevenSender = 'Lester Crest'
-Config.HintSevenSubject = 'Regarding a Vangelico Heist'
-Config.HintSevenMessage = 'Before you go hit Vangelico you will need a few things. Depending on if you want to go in loud or quiet you will need to search for a smoke grenade, an encrypted phone, a hammer, a circuit tester, an encrypted device, a glass cutter, a fingerprint bag, and fingerprint tape.'
-
--- HINT LOCATION 8 --------------------------------------------------------------
-Config.HintEightHeader = 'Bobcat Security Heist'
-Config.HintEightSubText = ''
-Config.HintEightIcon = 'fa-solid fa-id-card-clip'
-Config.HintEightSender = 'Lester Crest'
-Config.HintEightSubject = 'Regarding a Bobcat Security Heist'
-Config.HintEightMessage = 'Before you go hit Bobcat Security you will need a few things. Depending on if you want to go in loud or quiet you will need to search for plastic explosive, a pair of pliers, an encrypted device, an encrypted phone, a bag, a smoke grenade, and a Bobcat keycard A.'
-
--- HINT LOCATION 9 --------------------------------------------------------------
-Config.HintNineHeader = 'Paleto Bank Heist'
-Config.HintNineSubText = ''
-Config.HintNineIcon = 'fa-solid fa-vault'
-Config.HintNineSender = 'Lester Crest'
-Config.HintNineSubject = 'Regarding a Paleto Bank Heist'
-Config.HintNineMessage = 'Before you go hit Paleto Bank you will need a few things. Depending on if you want to go in loud or quiet you will need to search for a pair of pliers, a Paleto Bank keycard B, a bag, a smoke grenade, an encrypted device, a decryptor, and a hackcard.'
-
--- HINT LOCATION 10 --------------------------------------------------------------
-Config.HintTenHeader = 'Pacific Bank Heist'
-Config.HintTenSubText = ''
-Config.HintTenIcon = 'fa-solid fa-building-columns'
-Config.HintTenSender = 'Lester Crest'
-Config.HintTenSubject = 'Regarding a Pacific Bank Heist'
-Config.HintTenMessage = 'Before you go hit Pacific Bank you will need a few things. Depending on if you want to go in loud or quiet you will need to search for an encrypted device, an encrypted laptop, an encrypted phone, a pair of pliers, a bag, a Pacific Bank key, a Pacific Bank keycard, a decryptor, a hackcard, plastic explosive, a laser drill, and a smoke grenade.'
-
--- HINT LOCATION 11 --------------------------------------------------------------
-Config.HintElevenHeader = 'Oil Rig Heist'
-Config.HintElevenSubText = ''
-Config.HintElevenIcon = 'fa-solid fa-oil-well'
-Config.HintElevenSender = 'Lester Crest'
-Config.HintElevenSubject = 'Regarding a Oil Rig Heist'
-Config.HintElevenMessage = 'Before you go hit any Oil Rigs you will need a few things. You will need to search for a pair of pliers, an encrypted device, an encrypted phone, a crate jammer, a bag, a fuse, and an oil rig keycard.'
-
--- HINT LOCATION 12 --------------------------------------------------------------
-Config.HintTwelveHeader = 'Cayo Perico Heist'
-Config.HintTwelveSubText = ''
-Config.HintTwelveIcon = 'fa-solid fa-umbrella-beach'
-Config.HintTwelveSender = 'Lester Crest'
-Config.HintTwelveSubject = 'Regarding a Cayo Perico Heist'
-Config.HintTwelveMessage = 'Before you go hit Cayo Perico Island you will need to search for plastic explosive.'
+    -- Add unlimited peds here
+}

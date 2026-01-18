@@ -1,171 +1,80 @@
-QBCore = exports['qb-core']:GetCoreObject()
+local core = exports.qbx_core
 
+-- ped_streamer.lua handles all ped spawning, blips, markers, and payments
 
-CreateThread(function()
-    QBCore.Functions.LoadModel(Config.Ped)
-        local Ped = CreatePed(0, Config.Ped, Config.PedLocation.x, Config.PedLocation.y, Config.PedLocation.z-1.0, Config.PedLocation.w, false, false)
-        TaskStartScenarioInPlace(Ped, Config.PedScenario, true)
-        FreezeEntityPosition(Ped, true)
-        SetEntityInvincible(Ped, true)
-        SetBlockingOfNonTemporaryEvents(Ped, true)
-        exports['qb-target']:AddTargetEntity(Ped, {
-            options = {
-                {
-                    icon = Config.HintIcon,
-                    label = Config.HintLabel,
-                    action = function ()
-                        QBCore.Functions.TriggerCallback('bm-hints:HintPrice',function(paid)
-                        if paid then
-                            TriggerEvent('bm-hints:HintMenu')
-                        end
-                    end)
-                end,
-                },
-            },
-            distance = 2.0
-        })
-end)
+RegisterNetEvent('bm-hints:sendHint', function(pedIndex, hintIndex)
+    local hint = Config.Peds[pedIndex].hints[hintIndex]
+    local delivery = hint.delivery
 
-RegisterNetEvent('bm-hints:HintOneInfo', function()
-    QBCore.Functions.Notify('I\'ll be in touch with you soon', 'success', 5000)
-    SetTimeout(Config.WaitTime, function()
-        TriggerServerEvent('qb-phone:server:sendNewMail', {
-            sender = Config.HintOneSender,
-            subject = Config.HintOneSubject,
-            message = Config.HintOneMessage,
-            button = {}
-        })
-    end)
-end)
+    lib.notify({
+        description = "I'll be in touch soon.",
+        type = "success"
+    })
 
-RegisterNetEvent('bm-hints:HintTwoInfo', function()
-    QBCore.Functions.Notify('I\'ll be in touch with you soon', 'success', 5000)
-    SetTimeout(Config.WaitTime, function()
-        TriggerServerEvent('qb-phone:server:sendNewMail', {
-            sender = Config.HintTwoSender,
-            subject = Config.HintTwoSubject,
-            message = Config.HintTwoMessage,
-            button = {}
-        })
-    end)
-end)
+    SetTimeout(hint.wait, function()
 
-RegisterNetEvent('bm-hints:HintThreeInfo', function()
-    QBCore.Functions.Notify('I\'ll be in touch with you soon', 'success', 5000)
-    SetTimeout(Config.WaitTime, function()
-        TriggerServerEvent('qb-phone:server:sendNewMail', {
-            sender = Config.HintThreeSender,
-            subject = Config.HintThreeSubject,
-            message = Config.HintThreeMessage,
-            button = {}
-        })
-    end)
-end)
+        -- EMAIL DELIVERY
+        if delivery.method == "email" then
+            TriggerServerEvent('qb-phone:server:sendNewMail', {
+                sender = hint.emailSender,
+                subject = hint.emailSubject,
+                message = hint.emailMessage
+            })
+        end
 
-RegisterNetEvent('bm-hints:HintFourInfo', function()
-    QBCore.Functions.Notify('I\'ll be in touch with you soon', 'success', 5000)
-    SetTimeout(Config.WaitTime, function()
-        TriggerServerEvent('qb-phone:server:sendNewMail', {
-            sender = Config.HintFourSender,
-            subject = Config.HintFourSubject,
-            message = Config.HintFourMessage,
-            button = {}
-        })
-    end)
-end)
+        -- TEXT MESSAGE DELIVERY
+        if delivery.method == "text" then
+            TriggerServerEvent('qb-phone:server:sendNewMessage', {
+                sender = hint.emailSender,
+                message = hint.emailMessage
+            })
+        end
 
-RegisterNetEvent('bm-hints:HintFiveInfo', function()
-    QBCore.Functions.Notify('I\'ll be in touch with you soon', 'success', 5000)
-    SetTimeout(Config.WaitTime, function()
-        TriggerServerEvent('qb-phone:server:sendNewMail', {
-            sender = Config.HintFiveSender,
-            subject = Config.HintFiveSubject,
-            message = Config.HintFiveMessage,
-            button = {}
-        })
-    end)
-end)
+        -- ITEM DELIVERY
+        if delivery.method == "item" and delivery.item then
+            TriggerServerEvent('bm-hints:giveItem', delivery.item)
+        end
 
-RegisterNetEvent('bm-hints:HintSixInfo', function()
-    QBCore.Functions.Notify('I\'ll be in touch with you soon', 'success', 5000)
-    SetTimeout(Config.WaitTime, function()
-        TriggerServerEvent('qb-phone:server:sendNewMail', {
-            sender = Config.HintSixSender,
-            subject = Config.HintSixSubject,
-            message = Config.HintSixMessage,
-            button = {}
-        })
-    end)
-end)
+        -- WAYPOINT DELIVERY
+        if delivery.method == "waypoint" and delivery.waypoint then
+            SetNewWaypoint(delivery.waypoint.x, delivery.waypoint.y)
+            lib.notify({
+                description = "A location has been marked on your GPS.",
+                type = "inform"
+            })
+        end
 
-RegisterNetEvent('bm-hints:HintSevenInfo', function()
-    QBCore.Functions.Notify('I\'ll be in touch with you soon', 'success', 5000)
-    SetTimeout(Config.WaitTime, function()
-        TriggerServerEvent('qb-phone:server:sendNewMail', {
-            sender = Config.HintSevenSender,
-            subject = Config.HintSevenSubject,
-            message = Config.HintSevenMessage,
-            button = {}
-        })
-    end)
-end)
+        -- BLIP DELIVERY
+        if delivery.method == "blip" and delivery.blip then
+            local b = delivery.blip
+            local blip = AddBlipForCoord(b.coords.x, b.coords.y, b.coords.z)
 
-RegisterNetEvent('bm-hints:HintEightInfo', function()
-    QBCore.Functions.Notify('I\'ll be in touch with you soon', 'success', 5000)
-    SetTimeout(Config.WaitTime, function()
-        TriggerServerEvent('qb-phone:server:sendNewMail', {
-            sender = Config.HintEightSender,
-            subject = Config.HintEightSubject,
-            message = Config.HintEightMessage,
-            button = {}
-        })
-    end)
-end)
+            SetBlipSprite(blip, b.sprite or 161)
+            SetBlipColour(blip, b.color or 1)
+            SetBlipScale(blip, b.scale or 1.0)
 
-RegisterNetEvent('bm-hints:HintNineInfo', function()
-    QBCore.Functions.Notify('I\'ll be in touch with you soon', 'success', 5000)
-    SetTimeout(Config.WaitTime, function()
-        TriggerServerEvent('qb-phone:server:sendNewMail', {
-            sender = Config.HintNineSender,
-            subject = Config.HintNineSubject,
-            message = Config.HintNineMessage,
-            button = {}
-        })
-    end)
-end)
+            BeginTextCommandSetBlipName("STRING")
+            AddTextComponentString(b.text or "Hint Location")
+            EndTextCommandSetBlipName(blip)
 
-RegisterNetEvent('bm-hints:HintTenInfo', function()
-    QBCore.Functions.Notify('I\'ll be in touch with you soon', 'success', 5000)
-    SetTimeout(Config.WaitTime, function()
-        TriggerServerEvent('qb-phone:server:sendNewMail', {
-            sender = Config.HintTenSender,
-            subject = Config.HintTenSubject,
-            message = Config.HintTenMessage,
-            button = {}
-        })
-    end)
-end)
+            lib.notify({
+                description = "A location has been marked on your map.",
+                type = "inform"
+            })
+        end
 
-RegisterNetEvent('bm-hints:HintElevenInfo', function()
-    QBCore.Functions.Notify('I\'ll be in touch with you soon', 'success', 5000)
-    SetTimeout(Config.WaitTime, function()
-        TriggerServerEvent('qb-phone:server:sendNewMail', {
-            sender = Config.HintElevenSender,
-            subject = Config.HintElevenSubject,
-            message = Config.HintElevenMessage,
-            button = {}
-        })
-    end)
-end)
+        -- NOTIFICATION DELIVERY
+        if delivery.method == "notify" then
+            local msg = delivery.notifyMessage or hint.emailMessage
+            local nType = delivery.notifyType or "inform"
+            local duration = delivery.notifyDuration or 5000 -- fallback to 5s if not set
 
-RegisterNetEvent('bm-hints:HintTwelveInfo', function()
-    QBCore.Functions.Notify('I\'ll be in touch with you soon', 'success', 5000)
-    SetTimeout(Config.WaitTime, function()
-        TriggerServerEvent('qb-phone:server:sendNewMail', {
-            sender = Config.HintTwelveSender,
-            subject = Config.HintTwelveSubject,
-            message = Config.HintTwelveMessage,
-            button = {}
-        })
+            lib.notify({
+                description = msg,
+                type = nType,
+                duration = duration
+            })
+        end
+
     end)
 end)
