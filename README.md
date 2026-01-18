@@ -161,3 +161,14 @@ Each hint can have its own cooldown:
 ```lua
 cooldown = 60000 -- 1 minute
 ```
+
+## 🌍 Localization Support
+
+BM Hints includes full multi‑language support using a simple locale system.
+
+### **Configuring the Locale**
+
+Set your preferred language in `config.lua`:
+
+```lua
+Config.Locale = "en"
