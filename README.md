@@ -90,6 +90,7 @@ Each hint supports:
 - Wait time  
 - Cooldown  
 - Delivery method + settings  
+- Optional per‑hint payment override (cash, bank, item)
 
 ---
 
@@ -147,7 +148,19 @@ delivery = {
     notifyMessage = "Here's your tip."
 }
 ```
+## 💰 Per‑Hint Payment Overrides
 
+Each ped has a default payment method, but individual hints can override it.
+
+Example:
+
+```lua
+payment = {
+    type = "item",
+    item = "goldbar",
+    itemAmount = 2
+}
+```
 ## ⏳ Cooldowns
 
 Each hint can have its own cooldown:
