@@ -169,8 +169,7 @@ BM Hints includes full multi‑language support using a simple locale system.
 ### **Configuring the Locale**
 
 Set your preferred language in `config.lua`:
-> Currently the only language supported is English. Join the Discord to have your language added.
-
 ```lua
 Config.Locale = "en"
 ```
+> Currently the only language supported is English. Join the Discord to have your language added.
