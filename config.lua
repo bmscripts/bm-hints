@@ -13,10 +13,10 @@ Config.Peds = {
         label = 'Buy Information',
 
         payment = { -- default ped payment (fallback if hint doesn't define its own)
-            type = "item",      -- bank, cash, item
-            amount = 0,         -- bank or cash (if not used simply put nil)
-            item = "goldbar",   -- if not used simply put nil
-            itemAmount = 1      -- if not used simply put nil
+            type = "bank",      -- bank, cash, item
+            amount = 500,       -- bank or cash (if not used simply put nil)
+            item = nil,         -- if not used simply put nil
+            itemAmount = nil    -- if not used simply put nil
         },
 
         blip = { -- https://docs.fivem.net/docs/game-references/blips/
@@ -65,8 +65,8 @@ Config.Peds = {
                 cooldown = 10000, -- how long the player has to wait to find more information
 
                 payment = {
-                    type = "bank",
-                    amount = 2500
+                    type = "cash",
+                    amount = 1500
                 },
 
                 delivery = {
@@ -86,7 +86,7 @@ Config.Peds = {
 
                 payment = {
                     type = "cash",
-                    amount = 500
+                    amount = 2500
                 },
 
                 delivery = {
