@@ -5,7 +5,7 @@ local core = exports.qbx_core
 RegisterNetEvent('bm-hints:sendHint', function(pedIndex, hintIndex)
     local hint = Config.Peds[pedIndex].hints[hintIndex]
     local delivery = hint.delivery
-    local L = Lang[Config.Locale] -- shorthand
+    local L = Lang[Config.Locale]
 
     -- Contact confirmation
     lib.notify({
@@ -19,17 +19,9 @@ RegisterNetEvent('bm-hints:sendHint', function(pedIndex, hintIndex)
         -- EMAIL DELIVERY
         if delivery.method == "email" then
             TriggerServerEvent('qb-phone:server:sendNewMail', {
-                sender = hint.emailSender,
-                subject = hint.emailSubject,
-                message = hint.emailMessage
-            })
-        end
-
-        -- TEXT MESSAGE DELIVERY
-        if delivery.method == "text" then
-            TriggerServerEvent('qb-phone:server:sendNewMessage', {
-                sender = hint.emailSender,
-                message = hint.emailMessage
+                sender = hint.brokerSender,
+                subject = hint.brokerSubject,
+                message = hint.brokerMessage
             })
         end
 
@@ -48,29 +40,54 @@ RegisterNetEvent('bm-hints:sendHint', function(pedIndex, hintIndex)
             })
         end
 
-        -- BLIP DELIVERY
+        -- BLIP DELIVERY (RADIUS SEARCH AREA)
         if delivery.method == "blip" and delivery.blip then
             local b = delivery.blip
-            local blip = AddBlipForCoord(b.coords.x, b.coords.y, b.coords.z)
 
-            SetBlipSprite(blip, b.sprite or 161)
+            -- Create radius blip
+            local radius = b.radius or 75.0
+            local blip = AddBlipForRadius(b.coords.x, b.coords.y, b.coords.z, radius)
+
+            -- Style the radius blip
             SetBlipColour(blip, b.color or 1)
-            SetBlipScale(blip, b.scale or 1.0)
+            SetBlipAlpha(blip, b.alpha or 128)
+            SetBlipAsShortRange(blip, true)
 
-            BeginTextCommandSetBlipName("STRING")
-            AddTextComponentString(b.text or "Hint Location")
-            EndTextCommandSetBlipName(blip)
+            -- Optional center point
+            if b.showCenter then
+                local center = AddBlipForCoord(b.coords.x, b.coords.y, b.coords.z)
+                SetBlipSprite(center, b.sprite or 161)
+                SetBlipColour(center, b.color or 1)
+                SetBlipScale(center, b.scale or 0.8)
 
+                BeginTextCommandSetBlipName("STRING")
+                AddTextComponentString(b.text or "Search Area")
+                EndTextCommandSetBlipName(center)
+
+                -- Auto-remove center blip too
+                SetTimeout(b.removeAfter or 30000, function()
+                    RemoveBlip(center)
+                end)
+            end
+
+        -- Notify player
             lib.notify({
                 description = L.delivery.blip_set,
                 type = "inform",
                 position = Config.notifyPosition
             })
+
+            -- Auto-remove radius blip after X ms
+            SetTimeout(b.removeAfter or 60000, function()
+                RemoveBlip(blip)
+            end)
         end
+
+
 
         -- NOTIFICATION DELIVERY
         if delivery.method == "notify" then
-            local msg = delivery.notifyMessage or hint.emailMessage
+            local msg = delivery.notifyMessage or hint.brokerMessage
             local nType = delivery.notifyType or "inform"
             local duration = delivery.notifyDuration or 5000 -- fallback to 5s if not set
 

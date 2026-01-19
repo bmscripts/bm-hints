@@ -33,9 +33,9 @@ local Translations = {
 
     -- Errors
     errors = {
-        invalid_ped = "Internal error: invalid ped reference.",
-        invalid_hint = "Internal error: invalid hint reference.",
-        unknown_payment_type = "Internal error: unknown payment type.",
+        invalid_ped = "Invalid ped reference.",
+        invalid_hint = "Invalid hint reference.",
+        unknown_payment_type = "Unknown payment type.",
     }
 }
 

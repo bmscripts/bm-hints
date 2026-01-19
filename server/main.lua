@@ -5,9 +5,8 @@ lib.callback.register('bm-hints:pay', function(source, payment, pedIndex, hintIn
     local player = core:GetPlayer(source)
     if not player then return false end
 
-    local L = Lang[Config.Locale] -- shorthand
+    local L = Lang[Config.Locale]
 
-    -- Validate pedIndex + hintIndex
     if not pedIndex or not hintIndex then
         print("^1[BM-HINTS] ERROR: pedIndex or hintIndex missing from client callback^0")
         TriggerClientEvent('ox_lib:notify', source, {

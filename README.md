@@ -7,7 +7,7 @@
 # BM Hints – QB/QBox Information Broker System
 
 A polished, configurable information‑broker system for FiveM.  
-Players can approach NPCs, purchase information, and receive hints through multiple delivery methods such as email, text, map markers, items, and more.
+Players can approach NPCs, purchase information, and receive hints through multiple delivery methods such as email, map markers, items, and more.
 
 Designed with modularity, UX, and server‑owner flexibility in mind.
 
@@ -86,7 +86,7 @@ Each hint supports:
 - Header  
 - Subtext  
 - Icon  
-- Email sender/subject/message  
+- Broker sender/subject/message  
 - Wait time  
 - Cooldown  
 - Delivery method + settings  
@@ -104,15 +104,7 @@ delivery = {
 }
 ```
 
-### **2. Text Message**
-Sends a text message through qb-phone.
-```lua
-delivery = {
-    method = "text"
-}
-```
-
-### **3. Item**
+### **2. Item**
 Gives the player an item.
 ```lua
 delivery = {
@@ -121,7 +113,7 @@ delivery = {
 }
 ```
 
-### **4. Waypoint**
+### **3. Waypoint**
 Marks a GPS location.
 ```lua
 delivery = {
@@ -129,21 +121,23 @@ delivery = {
     waypoint = vec3(452.1, -973.2, 30.7)
 }
 ```
-### **5. Blip**
-Adds a map blip + notifies the player.
+### **4. Blip (Radius Search Area + Auto‑Removal)**
+Creates a search radius instead of an exact point. Players must explore the area to find the objective.
 ```lua
 delivery = {
     method = "blip",
     blip = {
         coords = vec3(1234.5, -1300.2, 35.0),
-        sprite = 161,
+        radius = 90.0,        -- radius of the search area
         color = 1,
-        scale = 1.0,
-        text = "Hidden Stash"
+        alpha = 128,          -- transparency
+        removeAfter = 45000,  -- auto-remove after 45 seconds
+        showCenter = false,   -- optional small center blip
+        text = "Search Area"
     }
 }
 ```
-### **6. Notify**
+### **5. Notify**
 Shows a notification with custom duration.
 ```lua
 delivery = {

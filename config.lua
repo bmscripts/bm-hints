@@ -2,7 +2,7 @@ Config = {}
 
 Config.Locale = "en" -- only language currently supported is english
 
-Config.notifyPosition = "top-right" -- top | top-right | top-left | bottom | bottom-right | bottom-left | center-right | center-left
+Config.notifyPosition = "center-right" -- top | top-right | top-left | bottom | bottom-right | bottom-left | center-right | center-left
 
 Config.Peds = {
     {
@@ -14,7 +14,7 @@ Config.Peds = {
 
         payment = {
             type = "item",      -- bank, cash, item
-            amount = 10000,     -- used for bank/cash
+            amount = 0,     -- used for bank/cash
             item = "goldbar",   -- if not used simply put nil
             itemAmount = 1      -- if not used simply put nil
         },
@@ -41,9 +41,9 @@ Config.Peds = {
                 header = "ATM Robbery",
                 subtext = "High risk, high reward!",
                 icon = "fa-solid fa-credit-card", -- https://fontawesome.com/search
-                emailSender = "Lester Crest",
-                emailSubject = "Regarding an ATM Robbery",
-                emailMessage = "Before you go hit any ATMs you will need a few things depending on which method you choose to do. You can either find a credit card and hack into the ATM. Find a gas tank and lighter and blow open the ATM. Or find a laser drill, nylon rope, and toolkit and use your car pull out the ATM.",
+                brokerSender = "Lester Crest",
+                brokerSubject = "Regarding an ATM Robbery",
+                brokerMessage = "Before you go hit any ATMs you will need a few things depending on which method you choose to do. You can either find a credit card and hack into the ATM. Find a gas tank and lighter and blow open the ATM. Or find a laser drill, nylon rope, and toolkit and use your car pull out the ATM.",
                 wait = 5000, -- how long till the delivery method is made
                 cooldown = 10000, -- how long the player has to wait to find more information
                 delivery = {
@@ -54,9 +54,9 @@ Config.Peds = {
                 header = "Store Robbery",
                 subtext = "High risk, high reward!",
                 icon = "fa-solid fa-basket-shopping", -- https://fontawesome.com/search
-                emailSender = "Lester Crest",
-                emailSubject = "Regarding a Store Robbery",
-                emailMessage = "Before you go hit any convenience stores you will need a few things. You will need to search for a circuit tester, an advanced lockpick, a hard drive, and an encrypted device.",
+                brokerSender = "",
+                brokerSubject = "",
+                brokerMessage = "",
                 wait = 5000, -- how long till the delivery method is made
                 cooldown = 10000, -- how long the player has to wait to find more information
                 delivery = {
@@ -68,9 +68,9 @@ Config.Peds = {
                 header = "House Robbery",
                 subtext = "High risk, high reward!",
                 icon = "fa-solid fa-house", -- https://fontawesome.com/search
-                emailSender = "Lester Crest",
-                emailSubject = "Regarding a House Robbery",
-                emailMessage = "Before you go hit any houses you will need an advanced lockpick and will need to search for a guy who will guide you through the rest.",
+                brokerSender = "",
+                brokerSubject = "",
+                brokerMessage = "",
                 wait = 5000, -- how long till the delivery method is made
                 cooldown = 10000, -- how long the player has to wait to find more information
                 delivery = {
@@ -82,19 +82,20 @@ Config.Peds = {
                 header = "Vangelico Heist",
                 subtext = "High risk, high reward!",
                 icon = "fa-solid fa-gem", -- https://fontawesome.com/search
-                emailSender = "Lester Crest",
-                emailSubject = "Regarding a Vangelico Heist",
-                emailMessage = "Before you go hit Vangelico you will need a few things. Depending on if you want to go in loud or quiet you will need to search for a smoke grenade, an encrypted phone, a hammer, a circuit tester, an encrypted device, a glass cutter, a fingerprint bag, and fingerprint tape.",
+                brokerSender = "",
+                brokerSubject = "",
+                brokerMessage = "",
                 wait = 5000, -- how long till the delivery method is made
                 cooldown = 10000, -- how long the player has to wait to find more information
                 delivery = {
                     method = "blip", -- email, text, item, waypoint, blip, notify
                     blip = {
                         coords = vec3(1234.5, -1300.2, 35.0),
-                        sprite = 161,
+                        radius = 200.0,
                         color = 1,
-                        scale = 1.0,
-                        text = "Hidden Stash"
+                        alpha = 128,
+                        removeAfter = 10000, -- 10 seconds
+                        showCenter = false
                     }
                 }
             },
@@ -102,16 +103,16 @@ Config.Peds = {
                 header = "Fleeca Bank Heist",
                 subtext = "High risk, high reward!",
                 icon = "fa-solid fa-sack-dollar", -- https://fontawesome.com/search
-                emailSender = "Lester Crest",
-                emailSubject = "Regarding a Fleeca Bank Heist",
-                emailMessage = "Before you go hit any Fleeca banks you will need a few things. You will need to search for an encrypted device, a pair of pliers, a bag, a fleeca keycard, and an encrypted laptop.",
+                brokerSender = "Lester Crest",
+                brokerSubject = "Regarding a Fleeca Bank Heist",
+                brokerMessage = "Before you go hit any Fleeca banks you will need a few things. You will need to search for an encrypted device, a pair of pliers, a bag, a fleeca keycard, and an encrypted laptop.",
                 wait = 5000, -- how long till the delivery method is made
                 cooldown = 10000, -- how long the player has to wait to find more information
                 delivery = {
                     method = "notify", -- email, text, item, waypoint, blip, notify
                     notifyDuration = 10000, -- how long the notification stays visible (ms)
                     notifyType = "inform", -- optional: inform, success, error
-                    notifyMessage = nil -- optional: override emailMessage
+                    notifyMessage = nil -- optional: override brokerMessage
                 }
             },
         }
@@ -119,4 +120,3 @@ Config.Peds = {
 
     -- Add unlimited peds here
 }
-

@@ -1,6 +1,6 @@
 RegisterNetEvent('bm-hints:openMenu', function(pedIndex)
     local pedData = Config.Peds[pedIndex]
-    local L = Lang[Config.Locale] -- shorthand
+    local L = Lang[Config.Locale]
 
     local menu = {
         {
