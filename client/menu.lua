@@ -17,13 +17,15 @@ RegisterNetEvent('bm-hints:openMenu', function(pedIndex)
             icon = hint.icon,
             onSelect = function()
 
+                -- Use per-hint payment if defined, otherwise fallback to ped payment
+                local paymentData = hint.payment or pedData.payment
+
                 -- Trigger payment + cooldown check
                 lib.callback('bm-hints:pay', false, function(paid)
                     if paid then
-                        -- Only send the hint if payment succeeded
                         TriggerEvent('bm-hints:sendHint', pedIndex, hintIndex)
                     end
-                end, pedData.payment, pedIndex, hintIndex)
+                end, paymentData, pedIndex, hintIndex)
             end
         }
     end

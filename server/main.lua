@@ -7,6 +7,7 @@ lib.callback.register('bm-hints:pay', function(source, payment, pedIndex, hintIn
 
     local L = Lang[Config.Locale]
 
+    -- Validate pedIndex + hintIndex
     if not pedIndex or not hintIndex then
         print("^1[BM-HINTS] ERROR: pedIndex or hintIndex missing from client callback^0")
         TriggerClientEvent('ox_lib:notify', source, {
@@ -41,16 +42,15 @@ lib.callback.register('bm-hints:pay', function(source, payment, pedIndex, hintIn
         return false
     end
 
-    -- Initialize cooldown table for player
+    -- Cooldown setup
     cooldowns[source] = cooldowns[source] or {}
     cooldowns[source][pedIndex] = cooldowns[source][pedIndex] or {}
 
     local cd = hint.cooldown or 0
-
-    -- Check cooldown
     local now = os.time()
     local expires = cooldowns[source][pedIndex][hintIndex] or 0
 
+    -- Cooldown check
     if now < expires then
         local remaining = expires - now
         TriggerClientEvent('ox_lib:notify', source, {
@@ -79,7 +79,6 @@ lib.callback.register('bm-hints:pay', function(source, payment, pedIndex, hintIn
     if pType == "bank" then
         if player.Functions.RemoveMoney('bank', amount) then
             cooldowns[source][pedIndex][hintIndex] = now + (cd / 1000)
-
             TriggerClientEvent('ox_lib:notify', source, {
                 description = (L.payment.paid_bank):format(amount),
                 type = "success",
@@ -100,7 +99,6 @@ lib.callback.register('bm-hints:pay', function(source, payment, pedIndex, hintIn
     if pType == "cash" then
         if player.Functions.RemoveMoney('cash', amount) then
             cooldowns[source][pedIndex][hintIndex] = now + (cd / 1000)
-
             TriggerClientEvent('ox_lib:notify', source, {
                 description = (L.payment.paid_cash):format(amount),
                 type = "success",
@@ -164,7 +162,7 @@ lib.callback.register('bm-hints:pay', function(source, payment, pedIndex, hintIn
     return false
 end)
 
--- ITEM DELIVERY HANDLER (for hint rewards)
+-- ITEM DELIVERY HANDLER
 RegisterNetEvent('bm-hints:giveItem', function(item)
     local src = source
     local player = core:GetPlayer(src)
