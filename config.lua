@@ -106,7 +106,7 @@ Config.Peds = {
 
                 payment = {
                     type = "item",
-                    item = "diamond",
+                    item = "goldbar",
                     itemAmount = 1
                 },
 
