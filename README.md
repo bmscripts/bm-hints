@@ -37,7 +37,7 @@ Designed with modularity, UX, and server‑owner flexibility in mind.
 
 ## 📦 Dependencies
 
-- **QBCore (qbx_core)**
+- **QBCore/QBox**
 - **ox_lib**
 - **ox_target**
 - **qb-phone** (or any phone using qb-phone email export)
