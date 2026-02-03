@@ -181,11 +181,6 @@ Config.Locale = "en"
 ```
 > Currently the only language supported is English. Join the Discord to have your language added.
 
-# License
+## 📄 License
 
-You may use and edit this script for personal or server use.
-
-If you reupload, redistribute, or share this script in any form, **attribution is required**.  
-You must credit the original author: **BM Scripts**.
-
-You may not claim this script as your own.
+**Attribution is Required**. Do not redistribute or sell without explicit permission. Keep all author(s) credits intact.
