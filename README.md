@@ -4,7 +4,7 @@
   <img alt="Shows the BM Scripts banner" src="https://i.ibb.co/wNh5yp3t/BMScripts-Header.png">
 </picture>
 
-# BM Hints – QB/QBox Information Broker System
+# Hints – QB/QBox Information Broker System
 
 A polished, configurable information‑broker system for FiveM.  
 Players can approach NPCs, purchase information, and receive hints through multiple delivery methods such as email, map markers, items, and more.
